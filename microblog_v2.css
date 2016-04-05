@@ -1,0 +1,446 @@
+@charset "utf-8";
+/* CSS Document */
+
+.header {
+background-color: #92A8D1;
+color: #EAF0FA;
+width: 100%;
+height: 60px;
+position: fixed;
+z-index: 5;
+top: 0%;
+left: 0%;
+}
+
+#title {
+font-size: 200%;
+position: relative;
+top: 10px;
+left: 30px;
+float: left;
+}
+
+#acctInfoBox {
+float: right;
+font-size: 20px;
+}
+
+#noCurrentUser, #noCurrentUser * {
+float: left;
+position: relative;
+display: inline;
+}
+
+#noCurrentUser{
+border-style: solid;
+border-width: thin;
+border-color: #6580B1;
+border-radius: 25px;
+padding-left: 5%;
+padding-right: 5%;
+background-color: #436095;
+right: 30px;
+top: 10px;
+}
+
+#nCULogin:hover, #nCURegister:hover, #dCULogout:hover {
+cursor: pointer;
+}
+
+#displayCurrentUser, #displayCurrentUser * {
+float: left;
+position: relative;
+display: inline;
+}
+
+#displayCurrentUser{
+border-style: solid;
+border-width: thin;
+border-color: #6580B1;
+border-radius: 25px;
+padding-left: 5%;
+padding-right: 5%;
+background-color: #436095;
+right: 30px;
+top: 10px;
+}
+
+#backgroundBox {
+background-color: #F7CAC9;
+width: 100%;
+top: 60px;
+position: relative;
+}
+
+#backgroundBox a {
+text-decoration: none;
+}
+
+#buttonPlacer {
+position: relative;
+width: 50%;
+top: 50%;
+left: 50%;
+}
+
+.backgroundBoxButton {
+float: left;
+width: 240px;
+padding: 2% 1% 2% 1%;
+text-align: center;
+background-color: #92A8D1;
+color: white;
+border-radius: 10px;
+}
+
+.backgroundBoxButton:hover{
+cursor: pointer;
+}
+
+#buttonDivider {
+width: 10px;
+height: 30px;
+float: left;
+}
+
+#SignUpBox, #LogInBox {
+width: 400px;
+height: 300px;
+background-color: white;
+border-width: thick;
+border-style: solid;
+border-color: #92A8D1;
+position: fixed;
+top: 50%;
+left: 50%;
+margin-top: -200px;
+margin-left: -200px;
+opacity: 0;
+z-index: -1;
+border-radius: 10px;
+}
+
+.SignUpBoxButton {
+background-color: #92A8D1;
+width: 50px;
+height: 20px;
+text-align: center;
+color: white;
+text-decoration: none;
+}
+
+.SwitchToLogIn {
+float: left;
+width: 50%;
+text-align: center;
+background-color: #92A8D1;
+height: 100%;
+color: white;
+font-size: 26px;
+}
+
+.SwitchToSignUp {
+float: right;
+width: 50%;
+text-align: center;
+background-color: #92A8D1;
+height: 100%;
+color: white;
+font-size: 26px;
+}
+
+.SwitchToLogIn:hover, .SwitchToSignUp:hover {
+cursor: pointer;
+}
+
+.LogInBoxButton {
+margin-top: 5%;
+margin-left: 36%;
+}
+
+/*-----------------------------------------------*/
+/*---------------Write-A-Post Stlye--------------*/
+/*-----------------------------------------------*/
+
+#blogPostFrame {
+width: 80%;
+height: 80%;
+position: fixed;
+top: 13%;
+left: 10%;
+border-style: solid;
+border-width: thick;
+border-color: #92A8D1;
+opacity: 0;
+z-index: -2;
+}
+
+#blogPostPlate {
+width: 100%;
+height: 100%;
+}
+
+#blogPostTopBar {
+width: 100%;
+height: 5%;
+background-color: #92A8D1;
+}
+
+#blogPostTopBarEmptySpace {
+width: 93%;
+height: 100%;
+background-color: #92A8D1;
+float: left;
+}
+
+#blogPostTopBarCancel {
+width: 7%;
+height: 100%;
+background-color: #F7CAC9;
+color: #92A8D1;
+float: right;
+text-align: center;
+}
+
+#blogPostBody {
+background-color: beige;
+height: 88%;
+width: 100%;
+}
+
+#blogPostBodyCenter {
+width: 96%;
+height: 100%;
+float: left;
+}
+
+#blogPostBodyLeftSpace{
+height: 100%;
+width: 2%;
+float: left;
+}
+
+#blogPostBodyRightSpace{
+height: 100%;
+width: 2%;
+float: right;
+}
+
+#blogPostBottomBar {
+width: 100%;
+height: 7%;
+}
+
+#blogPostSubmitButton {
+width: 100%;
+height: 100%;
+background-color: #F7CAC9;
+color: white;
+text-align: center;
+font-weight: bold;
+font-size: 28px;
+}
+
+.blogPostBodySingleSpace{
+width: 100%;
+}
+
+#blogPostBodyTitleInput, #blogPostBodyHashtagInput {
+width: 100%;
+}
+
+.blogPostBodyMultiSpace{
+width: 100%;
+height: 50%;
+}
+
+#blogPostBodyContentInput{
+width: 100%;
+max-width: 100%;
+height: 300px;
+max-height: 300px;
+}
+
+#blogPostTopBarCancel:hover, #blogPostSubmitButton:hover {
+cursor: pointer;
+}
+
+/*-----------------------------------------------*/
+/*----------------Post Board Stlye---------------*/
+/*-----------------------------------------------*/
+
+#postBoard {
+position: relative;
+top: 100px;
+margin-left: 3%;
+margin-right: 3%;
+width: 94%;
+background-color: #F5F3EE;
+}
+
+.postBoardSpace {
+width: 100%;
+height: 40px;
+}
+
+.postBoardLoadBarSpace {
+width: 30%;
+height: 40px;
+float: left;
+}
+
+#postBoardLoadBarButton {
+width: 40%;
+height: 40px;
+background-color:#92A8D1;
+color: white;
+font-size: 30px;
+text-align: center;
+float: left;
+border-radius: 10px;
+}
+
+#postBoardLoadBarButton:hover {
+cursor: pointer;
+}
+
+.postTemplate {
+margin-top: 1%;
+padding-top: 1%;
+padding-bottom: 1%;
+margin-left: 2.5%;
+width: 95%;
+background-color: beige;
+}
+
+.postTitle {
+font-size: 36px;
+margin-bottom: 0.5%;
+}
+
+.postHashtag, .postAuthor {
+font-size: 14px;
+margin-bottom: 0.5%;
+}
+
+.postContent {
+font-size: 18px;
+margin-bottom: 0.5%;
+}
+
+.postTemplate:hover {
+cursor:pointer;
+}
+
+/*--------------------------------------------*/
+/*-------------test new function--------------*/
+/*--------------------------------------------*/
+
+.postBoardCell {
+width: 90%;
+height: 400px;
+margin-left: 5%;
+margin-right: 5%;
+}
+
+
+.postBoardCellTopBar {
+width: 100%;
+height: 70px;
+background-color: #4A96AD;
+border-radius: 10px 30px 0px 0px;
+}
+
+.postBoardCellTopBarTextbox {
+color: beige;
+font-size: 30px;
+margin-left: 1%;
+}
+
+.postBoardCellTopBarAuthor {
+font-size: 15px;
+margin-top: 0.1%;
+margin-left: 1.5%;
+}
+
+.postBoardCellBottomBar {
+width: 100%;
+height: 50px;
+background-color: #4A96AD;
+border-radius: 0px 0px 10px 30px;
+}
+
+
+.postBoardCellBottomBarTextbox {
+color: beige;
+margin-left: 1.5%;
+}
+
+.postBoardCellBottomBarTextbox a {
+color: #436095;
+text-decoration: none;
+}
+
+.postBoardCellBottomBarTextbox a:visited {
+text-decoration: none;
+}
+
+.postBoardCellBottomBarTextbox a:hover {
+text-decoration: underline;
+}
+
+.postBoardSpace {
+margin-top: 2%;
+}
+
+
+.postBoardCellPicture {
+width: 94%;
+height: 100%;
+float: left;
+background: rgba(0,0,0,0.25);
+}
+
+.postBoardCellMiddleRow {
+width: 100%;
+height: 300px;
+}
+
+.postBoardCellLeftBar * {
+width: 3%;
+height: 300px;
+background-color: #4A96AD;
+opacity: 0.5;
+float: left;
+border-style: none;
+}
+
+.postBoardCellRightBar * {
+width: 3%;
+height: 300px;
+background-color: #4A96AD;
+opacity: 0.5;
+float: right;
+}
+
+.postBoardCellPicture img {
+display:block;
+margin-left: auto;
+margin-right: auto;
+height: 300px;
+-webkit-user-select: none;  /* Chrome all / Safari all */
+-moz-user-select: none;     /* Firefox all */
+-ms-user-select: none;      /* IE 10+ */
+user-select: none;          /* Likely future */      
+}
+
+
+.postBoardCellLeftBar:hover {
+cursor:pointer;
+}
+
+.postBoardCellRightBar:hover {
+cursor:pointer;
+}
+
+

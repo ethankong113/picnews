@@ -1,0 +1,644 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="user-scalable=no">
+<title>PicNews</title>
+<link rel="stylesheet" type="text/css" href="microblog_v2.css" />
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+
+<!--API starts here.-->
+
+
+<!-------------------->
+
+</head>
+
+<header class="header">
+<div class="logo">
+</div>
+<div id="title">
+PicNews -Beta Version-
+</div>
+<!--split between logo, title, and accountInfoBox-->
+<div id="acctInfoBox">
+<div id="noCurrentUser">
+<div id="nCULogin" onClick="showLogInBox()">
+Login
+</div>
+<div id="nCUDivider">
+&nbsp;&nbsp;||&nbsp;&nbsp; 
+</div>
+<div id="nCURegister" onClick="showSignUpBox()">
+Register
+</div>
+</div>
+<div id="displayCurrentUser">
+<div id="currentUserName">
+currentUserName
+</div>
+<div id ="dCUDivider">
+&nbsp;&nbsp;||&nbsp;&nbsp; 
+</div>
+<div id="dCULogout" onClick="logoutUser()">
+Logout
+</div>
+</div>
+</div>
+</header>
+
+<script language ="javascript">
+//Place all current user if available functions here.
+function checkCurrentUser(){
+Parse.initialize("PISELRNWEAz5NVfcfkoUwpbdl9lGepuJhCcRtkKg", "ogzSXvOLzld4qYJAVKfVbZLA0A105DiTNSasYN0I");
+if (Parse.User.current()) {
+	//change current user name.
+	$('#noCurrentUser').hide();
+	$('#displayCurrentUser').show();
+	var currentUser = Parse.User.current();
+	var CurrentUser = Parse.Object.extend("User");
+	var query = new Parse.Query(CurrentUser);
+	query.get(currentUser.id, {
+		success: function(result) {
+		var currentUserName = result.get("username");
+		$('#currentUserName').empty().append(currentUserName);
+		},
+		error: function(object, error) {
+		}
+	});// closing query.get
+	//change log in and sign up buttons to write-a-post button.
+	$('#withCurrentUserButton').show();
+	$('#noCurrentUserButton').hide();
+	
+} else {
+	$('#noCurrentUser').show();
+	$('#displayCurrentUser').hide();
+	//change log in and sign up buttons to write-a-post button.
+	$('#withCurrentUserButton').hide();
+	$('#noCurrentUserButton').show();
+}}
+//Hide the login/signup plate when user has logged in.
+
+function logoutUser(){
+Parse.User.logOut();
+var currentUser = Parse.User.current();
+location.reload();
+}
+
+</script>
+
+<section>
+<div id="backgroundBox">
+<div id="buttonPlacer">
+<div id="noCurrentUserButton">
+<div id="logInButton" class="backgroundBoxButton" onClick="showLogInBox()">
+Log In
+</div>
+<div id="buttonDivider">
+</div>
+<div id="signUpButton" class="backgroundBoxButton" onClick="showSignUpBox()">
+Sign Up
+</div>
+</div><!--closing noCurrentUserButton-->
+<div id="withCurrentUserButton">
+<div id="writePostButton" class="backgroundBoxButton" onClick="showBlogPostFrame()">
+Write a Post
+</div>
+</div><!--closing withCurrentUserButton-->
+</div><!--closing buttonPlacer-->
+</div><!--closing backgroundBox-->
+
+<script language = "javascript">
+$(document).ready(loadWebsite);
+$(window).resize(updateSize);
+
+function loadWebsite(){
+$('#LogInBox').hide();
+$('#SignUpBox').hide();
+$('#blogPostFrame').hide();
+checkCurrentUser();
+updateSize(); //update size of the website when we first load it.
+}
+
+function updateSize(){
+$('#backgroundBox').css('height',window.innerHeight/3);
+}
+
+function showLogInBox(){
+$('#LogInBox').show();
+$('#SignUpBox').hide();
+$('#LogInBox').css('z-index',4);
+$('#LogInBox').css('opacity',1);
+$('#SignUpBox').css('z-index',-1);
+$('#SignUpBox').css('opacity',0);
+}
+
+function showSignUpBox(){
+$('#SignUpBox').show();
+$('#LogInBox').hide();
+$('#LogInBox').css('z-index',-1);
+$('#LogInBox').css('opacity',0);
+$('#SignUpBox').css('z-index',4);
+$('#SignUpBox').css('opacity',1);
+}
+
+function showBlogPostFrame(){
+if (Parse.User.current()){
+$('#blogPostFrame').show()
+$('#blogPostFrame').css('z-index',5);
+$('#blogPostFrame').css('opacity',1);
+}}
+
+</script>
+</section>
+
+<!--We need to modify this code to put login and signup within the same display box-->
+
+<section class="logInBox">
+<div id="LogInBox">
+<div id="LogInBoxHeader">
+<div class="SwitchToLogIn" onClick="showLogInBox()">
+Log In
+</div>
+<div class="SwitchToSignUp" onClick="showSignUpBox()">
+Sign Up
+</div>
+</div>
+<div id="LogInPage">
+<form method="post" id="loginForm">
+username: <input type="text" name="username"><br>
+password: <input type="password" name="password"><br>
+<div class="LogInBoxButton">
+<input type="button" value="submit" onClick="userLogin(loginForm)" class="SignUpBoxButton">
+<input type="button" value="cancel" onClick="cancelRegister()" class="SignUpBoxButton">
+</div>
+</form>
+<script lanugage="javascript">
+function userLogin(form) {
+Parse.User.logIn(form.username.value, form.password.value, {
+  success: function(user) {
+    var currentUser = Parse.User.current();
+	alert("You have logged in successfully!")
+	location.reload();
+  },
+  error: function(user, error) {
+    alert("Error: " + error.code + " " + error.message);
+  }
+});
+}
+
+</script>
+</div>
+</div><!--Closing SignUpBox-->
+</section>
+
+<!--We need to modify this code to put login and signup within the same display box-->
+
+
+<section class="signUpBox">
+<div id="SignUpBox">
+<div id="SignUpBoxHeader">
+
+<div class="SwitchToLogIn" onClick="showLogInBox()">
+Log In
+</div>
+
+<div class="SwitchToSignUp" onClick="showSignUpBox()">
+Sign Up
+</div>
+
+</div>
+<div id="SignUpPage">
+<form method="post" id="signupForm">
+username: <input type="text" name="username"><br>
+password: <input type="password" name="password"><br>
+email: <input type="text" name="email"><br>
+<div class="LogInBoxButton">
+<input type="button" value="submit" onClick="startRegister(signupForm)" class="SignUpBoxButton">
+<input type="button" value="cancel" onClick="cancelRegister()" class="SignUpBoxButton">
+</div>
+</form>
+<script lanugage="javascript">
+
+function startRegister(form) {
+registerUser(form)
+}
+
+function checkRegister(form) {
+if (form.password.value.length < 8 || form.password.value.length > 20) {
+alert("Password length must be more than 8 characters or fewer than 20.");
+} else {
+registerUser(form);
+}
+}
+
+function cancelRegister() {
+$('#LogInBox').hide();
+$('#SignUpBox').hide();
+$('#LogInBox').css('z-index',-1);
+$('#LogInBox').css('opacity',0);
+$('#SignUpBox').css('z-index',-1);
+$('#SignUpBox').css('opacity',0);
+}
+
+//Parse functions begin here.
+
+
+function registerUser(form) {
+
+Parse.initialize("PISELRNWEAz5NVfcfkoUwpbdl9lGepuJhCcRtkKg", "ogzSXvOLzld4qYJAVKfVbZLA0A105DiTNSasYN0I");
+
+var user = new Parse.User();
+user.set("username", form.username.value);
+user.set("password", form.password.value);
+user.set("email", form.email.value);
+user.signUp(null, {
+  success: function(user) {
+	alert("Your account has been registered successfully!")
+	location.reload();
+  },
+  error: function(user, error) {
+    // Show the error message somewhere and let the user try again.
+    alert("Error: " + error.code + " " + error.message);
+  }
+});
+
+}
+</script>
+</div>
+</div><!--Closing SignUpBox-->
+</section>
+
+<!--------------------------------------------->
+<!---------Blog Post Create Goes Here---------->
+<!--------------------------------------------->
+
+<section>
+<div id="blogPostMaster">
+<div id="blogPostFrame">
+<div id="blogPostPlate">
+
+<div id="blogPostTopBar">
+<div id="blogPostTopBarEmptySpace">
+</div>
+<div id="blogPostTopBarCancel" onClick="cancelBlogPostFrame()">
+CLOSE
+</div>
+</div>
+
+<div id="blogPostBody">
+<div id="blogPostBodyLeftSpace">
+</div>
+
+<div id="blogPostBodyCenter">
+<form id="blogPostBodyForm" method="post">
+
+<div id="blogPostBodyTitle">
+<div class="blogPostBodyHeading">
+Title:
+</div>
+<div class="blogPostBodySingleSpace">
+<input type="text" name="title" placeholder="Title" id="blogPostBodyTitleInput">
+</div>
+</div>
+
+<div id="blogPostBodyHashtag">
+<div class="blogPostBodyHeading">
+Hashtag:
+</div>
+<div class="blogPostBodySingleSpace">
+<input type="text" name="hashtag" placeholder="#Hashtag #hashtag #simpleblog" id="blogPostBodyHashtagInput">
+</div>
+</div>
+
+<div id="blogPostBodyContent">
+<div class="blogPostBodyHeading">
+Post:
+</div>
+<div class="blogPostBodyMultiSpace">
+<textarea name="content" placeholder="Write Something Here..." id="blogPostBodyContentInput"></textarea>
+</div>
+</div>
+
+</form>
+</div>
+
+<div id="blogPostBodyRightSpace">
+</div>
+</div><!--Closing the body section-->
+
+<div id="blogPostBottomBar">
+<div id="blogPostSubmitButton" onClick="submitPost(blogPostBodyForm)">
+SUBMIT!
+</div>
+</div>
+
+</div><!--Closing the plate-->
+</div><!--Closing the frame-->
+</div>
+</section>
+
+<script language="javascript">
+
+function cancelBlogPostFrame(){
+$('#blogPostFrame').hide()
+$('#blogPostFrame').css('z-index',-2);
+$('#blogPostFrame').css('opacity',0);
+}
+
+function submitPost(form) {
+Parse.initialize("PISELRNWEAz5NVfcfkoUwpbdl9lGepuJhCcRtkKg", "ogzSXvOLzld4qYJAVKfVbZLA0A105DiTNSasYN0I");
+var currentUser = Parse.User.current();
+
+var BlogPost = Parse.Object.extend("BlogPost");
+var blogPost = new BlogPost();
+blogPost.set("authorId",currentUser.id)
+blogPost.set("authorName",currentUser.get("username"))
+blogPost.set("title",form.title.value)
+blogPost.set("hashtag",form.hashtag.value)
+blogPost.set("content",form.content.value)
+blogPost.save(null, {
+	success: function(blogPost) {
+		alert("You have submitted the post: " + form.title.value);
+		location.reload();
+		},
+	error: function(blogPost, error) {alert("Failed to Create a Post. Error Code: " + error.message);}
+});//closing blogPost.save
+
+}
+
+</script>
+
+
+<!--------------------------------------------->
+<!------------Post Page Begins Here------------>
+<!--------------------------------------------->
+
+<body>
+<div id="postBoard">
+
+<div class="postBoardSpace">
+</div>
+
+<div class ="postCreateAlgo">
+
+
+</div>
+
+<script language="javascript">
+
+var picNumArray = [] //Create the array for page number.
+var i = 0
+
+var firstToFifth = ['First','Second','Third','Fourth','Fifth']
+
+$(document).ready(loadPost);
+
+var lastPostTime
+
+function loadPost(){
+var GetPost = Parse.Object.extend("NewsPost");
+var getPost = new Parse.Query(GetPost);
+getPost.limit(5);
+getPost.descending("createdAt");
+getPost.find({
+	success: function(results) {
+		for (var x = 0; x < results.length; x++) {
+		var resultPost = results[x];
+		
+		picNumArray.push(1); //Set the array to page 1.
+
+		var numOfPic = resultPost.get('numOfPic')
+
+		if (numOfPic == 1) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow"><img src="" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+		
+		adjustImageSize(i);
+		
+		} else if (numOfPic == 2) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow" onClick="picNumMinusOne(' + i + ',' + numOfPic + ')"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div><div class="postBoardCellPicture_' + i + '_Second"><img src="' + resultPost.get("picture02").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow" onClick="picNumPlusOne(' + i + ',' + numOfPic + ')"><img src="simpleblog_picture/right_arrow.png" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+		
+		adjustImageSize(i);
+
+		} else if (numOfPic == 3) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow" onClick="picNumMinusOne(' + i + ',' + numOfPic + ')"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div><div class="postBoardCellPicture_' + i + '_Second"><img src="' + resultPost.get("picture02").url() + '"></div><div class="postBoardCellPicture_' + i + '_Third"><img src="' + resultPost.get("picture03").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow" onClick="picNumPlusOne(' + i + ',' + numOfPic + ')"><img src="simpleblog_picture/right_arrow.png" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+
+		adjustImageSize(i);
+
+		} else if (numOfPic == 4) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow" onClick="picNumMinusOne(' + i + ',' + numOfPic + ')"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div><div class="postBoardCellPicture_' + i + '_Second"><img src="' + resultPost.get("picture02").url() + '"></div><div class="postBoardCellPicture_' + i + '_Third"><img src="' + resultPost.get("picture03").url() + '"></div><div class="postBoardCellPicture_' + i + '_Fourth"><img src="' + resultPost.get("picture04").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow" onClick="picNumPlusOne(' + i + ',' + numOfPic + ')"><img src="simpleblog_picture/right_arrow.png" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+
+		adjustImageSize(i);
+
+		} else if (numOfPic == 5) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow" onClick="picNumMinusOne(' + i + ',' + numOfPic + ')"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div><div class="postBoardCellPicture_' + i + '_Second"><img src="' + resultPost.get("picture02").url() + '"></div><div class="postBoardCellPicture_' + i + '_Third"><img src="' + resultPost.get("picture03").url() + '"></div><div class="postBoardCellPicture_' + i + '_Fourth"><img src="' + resultPost.get("picture04").url() + '"></div><div class="postBoardCellPicture_' + i + '_Fifth"><img src="' + resultPost.get("picture05").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow" onClick="picNumPlusOne(' + i + ',' + numOfPic + ')"><img src="simpleblog_picture/right_arrow.png" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+		
+		adjustImageSize(i);
+
+		}
+		
+		createPageNum(i,numOfPic)//set page number to 1.
+		i = i + 1;//change i to next digit to give us the number of post.
+		lastPostTime = resultPost.get('createdAt');//gives us the time of the last post.
+
+		}
+	},
+	error: function(error) {alert("Error: " + error.code + " " + error.message)}
+	})//ending getPost.find
+
+}
+
+function adjustImageSize(i){
+		for (var y = 0; y < 1; y++ ) {
+		if ($('.postBoardCellPicture_' + i + '_' + firstToFifth[y] + ' img').width() > $('.postBoardCellPicture_' + i + '_'  + firstToFifth[y]).width()) {
+		$('.postBoardCellPicture_' + i + '_' + firstToFifth[y] + ' img').css('width',$('.postBoardCellPicture_' + i + '_' + firstToFifth[y]).width());//setting the image width to the cell width.
+		$('.postBoardCellPicture_' + i + '_' + firstToFifth[y] + ' img').css('height',$('.postBoardCellPicture_' + i + '_' + firstToFifth[y] + ' img').width() * ($('.postBoardCellPicture_' + i + '_' + firstToFifth[y]).height()/$('.postBoardCellPicture_' + i + '_'  + firstToFifth[y]).width()));
+		}}
+		}//here we set the image width to the cell width and convert the image height to the appropriate image heigth based on the ratio.
+		
+
+function loadMorePost(){
+var GetPost = Parse.Object.extend("NewsPost");
+var getPost = new Parse.Query(GetPost);
+getPost.limit(5);
+getPost.descending("createdAt");
+getPost.lessThan("createdAt",lastPostTime);//This extra line will help us search the posts following the 5th post in the last search.
+getPost.find({
+	success: function(results) {
+		
+		for (var x = 0; x < results.length; x++) {
+		
+		var resultPost = results[x];
+		
+		picNumArray.push(1); //Set the array to page 1.
+
+		var numOfPic = resultPost.get('numOfPic')
+
+		if (numOfPic == 1) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow"><img src="" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+
+		} else if (numOfPic == 2) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow" onClick="picNumMinusOne(' + i + ',' + numOfPic + ')"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div><div class="postBoardCellPicture_' + i + '_Second"><img src="' + resultPost.get("picture02").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow" onClick="picNumPlusOne(' + i + ',' + numOfPic + ')"><img src="simpleblog_picture/right_arrow.png" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+
+		} else if (numOfPic == 3) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow" onClick="picNumMinusOne(' + i + ',' + numOfPic + ')"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div><div class="postBoardCellPicture_' + i + '_Second"><img src="' + resultPost.get("picture02").url() + '"></div><div class="postBoardCellPicture_' + i + '_Third"><img src="' + resultPost.get("picture03").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow" onClick="picNumPlusOne(' + i + ',' + numOfPic + ')"><img src="simpleblog_picture/right_arrow.png" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+
+		} else if (numOfPic == 4) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow" onClick="picNumMinusOne(' + i + ',' + numOfPic + ')"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div><div class="postBoardCellPicture_' + i + '_Second"><img src="' + resultPost.get("picture02").url() + '"></div><div class="postBoardCellPicture_' + i + '_Third"><img src="' + resultPost.get("picture03").url() + '"></div><div class="postBoardCellPicture_' + i + '_Fourth"><img src="' + resultPost.get("picture04").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow" onClick="picNumPlusOne(' + i + ',' + numOfPic + ')"><img src="simpleblog_picture/right_arrow.png" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+
+		} else if (numOfPic == 5) {
+
+		$(".postCreateAlgo").append('<div class="postBoardCell"><div class="postBoardCellTopBar"><div class="postBoardCellTopBarTextbox">' + resultPost.get('title') + '</div><div class="postBoardCellTopBarAuthor">by: ' + resultPost.get('author') +'</div></div>' + '<div class="postBoardCellMiddleRow"><div class="postBoardCellLeftBar" id="pBC_' + i + '_leftArrow" onClick="picNumMinusOne(' + i + ',' + numOfPic + ')"><img src="" class="leftArror"></div><div class="postBoardCellPicture"><div class="postBoardCellPicture_' + i + '_First"><img src="' + resultPost.get("picture01").url() + '"></div><div class="postBoardCellPicture_' + i + '_Second"><img src="' + resultPost.get("picture02").url() + '"></div><div class="postBoardCellPicture_' + i + '_Third"><img src="' + resultPost.get("picture03").url() + '"></div><div class="postBoardCellPicture_' + i + '_Fourth"><img src="' + resultPost.get("picture04").url() + '"></div><div class="postBoardCellPicture_' + i + '_Fifth"><img src="' + resultPost.get("picture05").url() + '"></div></div><div class="postBoardCellRightBar" id="pBC_' + i + '_rightArrow" onClick="picNumPlusOne(' + i + ',' + numOfPic + ')"><img src="simpleblog_picture/right_arrow.png" class="rightArror"></div></div>' + '<div class="postBoardCellBottomBar"><div class="postBoardCellBottomBarTextbox">Source: <a href="' + resultPost.get('source') + '"> Click Here </a></div></div></div><div class="postBoardSpace"></div>')
+		
+		}
+
+		createPageNum(i,numOfPic)//set page number to 1.
+		i = i + 1;//change i to next digit to give us the number of post.
+		lastPostTime = resultPost.get('createdAt');//gives us the time of the last post.
+
+		}
+	},
+	error: function(error) {alert("Error: " + error.code + " " + error.message)}
+	})//ending getPost.find
+
+}
+
+//----------------------------------------------------------------------------------------------------//
+
+function createPageNum(i,numOfPic){
+if (numOfPic == 1) {
+$('.postBoardCellPicture_' + i + '_First').show();
+} else if (numOfPic == 2) {
+$('.postBoardCellPicture_' + i + '_First').show();
+$('.postBoardCellPicture_' + i + '_Second').hide();
+} else if (numOfPic == 3) {
+$('.postBoardCellPicture_' + i + '_First').show();
+$('.postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third').hide();
+} else if (numOfPic == 4) {
+$('.postBoardCellPicture_' + i + '_First').show();
+$('.postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third, .postBoardCellPicture_' + i + '_Fourth').hide();
+} else if (numOfPic == 5) {
+$('.postBoardCellPicture_' + i + '_First').show();
+$('.postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third, .postBoardCellPicture_' + i + '_Fourth, .postBoardCellPicture_' + i + '_Fifth').hide();
+}
+}
+
+
+function picNumPlusOne(i,j) {
+	if (picNumArray[i] < j) {
+		picNumArray[i] = picNumArray[i] + 1
+		changePicture(i,j,picNumArray[i])
+		$('#pBC_' + i + '_leftArrow img').attr('src','simpleblog_picture/left_arrow.png');
+		if (picNumArray[i] == j) {
+		$('#pBC_' + i + '_rightArrow img').attr('src','');
+		}
+	}
+}//This is good. ‘j’ represents number of pictures we retrieve from database.
+
+function picNumMinusOne(i,j) {
+	if (picNumArray[i] > 1) {
+		picNumArray[i] = picNumArray[i] - 1
+		changePicture(i,j,picNumArray[i])
+		$('#pBC_' + i + '_rightArrow img').attr('src','simpleblog_picture/right_arrow.png');
+		if (picNumArray[i] == 1) {
+		$('#pBC_' + i + '_leftArrow img').attr('src','');
+		}
+	}
+}//This is good. ‘j’ represents number of pictures we retrieve from database.
+
+function changePicture(i,j,picNum) {
+	if (j == 1) {
+	$('.postBoardCellPicture_'+ i + '_First').show("fast");
+	} //complete (j == 1) 
+	else if (j == 2) {
+	if (picNum == 1) {
+	$('.postBoardCellPicture_'+ i + '_First').show("fast");
+	$('.postBoardCellPicture_' + i + '_Second').hide("fast");
+	} else if (picNum == 2) {
+	$('.postBoardCellPicture_'+ i + '_First').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Second').show("fast");
+	} 	
+	} //complete (j == 2)
+	else if (j == 3) {
+	if (picNum == 1) {
+	$('.postBoardCellPicture_'+ i + '_First').show("fast");
+	$('.postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third').hide("fast");
+	} else if (picNum == 2) {
+	$('.postBoardCellPicture_'+ i + '_First, .postBoardCellPicture_' + i + '_Third').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Second').show("fast");
+	} else if (picNum == 3) {
+	$('.postBoardCellPicture_'+ i + '_First, .postBoardCellPicture_' + i + '_Second').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Third').show("fast");
+	}
+	} //complete (j == 3)
+	else if (j == 4) {
+	if (picNum == 1) {
+	$('.postBoardCellPicture_'+ i + '_First').show("fast");
+	$('.postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third, .postBoardCellPicture_' + i + '_Fourth').hide("fast");
+	} else if (picNum == 2) {
+	$('.postBoardCellPicture_'+ i + '_First, .postBoardCellPicture_' + i + '_Third, .postBoardCellPicture_' + i + '_Fourth').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Second').show("fast");
+	} else if (picNum == 3) {
+	$('.postBoardCellPicture_'+ i + '_First, .postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Fourth').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Third').show("fast");
+	} else if (picNum == 4) {
+	$('.postBoardCellPicture_'+ i + '_First, .postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Fourth').show("fast");
+	}
+	} //complete (j == 4)
+	else if (j == 5) {
+	if (picNum == 1) {
+	$('.postBoardCellPicture_'+ i + '_First').show("fast");
+	$('.postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third, .postBoardCellPicture_' + i + '_Fourth, .postBoardCellPicture_' + i + '_Fifth').hide("fast");
+	} else if (picNum == 2) {
+	$('.postBoardCellPicture_' + i + '_First, .postBoardCellPicture_' + i + '_Third, .postBoardCellPicture_' + i + '_Fourth, .postBoardCellPicture_' + i + '_Fifth').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Second').show("fast");
+	} else if (picNum == 3) {
+	$('.postBoardCellPicture_' + i + '_First, .postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Fourth, .postBoardCellPicture_' + i + '_Fifth').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Third').show("fast");
+	} else if (picNum == 4) {
+	$('.postBoardCellPicture_' + i + '_First, .postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third, .postBoardCellPicture_' + i + '_Fifth').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Fourth').show("fast");
+	} else if (picNum == 5) {
+	$('.postBoardCellPicture_' + i + '_First, .postBoardCellPicture_' + i + '_Second, .postBoardCellPicture_' + i + '_Third, .postBoardCellPicture_' + i + '_Fourth').hide("fast");
+	$('.postBoardCellPicture_' + i + '_Fifth').show("fast");
+	}
+	}// complete (j==5)
+	}//This is good.
+
+
+</script>
+
+<div class="postBoardSpace">
+</div>
+
+<div id="postBoardLoadBar">
+<div class="postBoardLoadBarSpace"></div>
+<div id="postBoardLoadBarButton" onClick="loadMorePost()">Load More</div>
+<div class="postBoardLoadBarSpace"></div>
+</div>
+
+<div class="postBoardSpace">
+</div>
+<div class="postBoardSpace">
+</div>
+
+</div>
+
+</body>
+
+<script language="javascript">
+</script>
+
+</html>
